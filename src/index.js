@@ -10,7 +10,7 @@ const refs = {
     input: document.querySelector('.search-input-js'),
 };
 
-const onDebounceInput = debounce(onCountryInput, 400);
+const onDebounceInput = debounce(onCountryInput, 500);
 
 refs.input.addEventListener('input', onDebounceInput);
 
