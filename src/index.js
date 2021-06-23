@@ -2,88 +2,52 @@ import './sass/main.scss';
 import countryTpl from './templates/countryTpl.hbs';
 import countriesTpl from './templates/countriesTpl.hbs';
 import fetchCountries from './js/fetchCountries.js';
+const debounce = require('lodash.debounce');
 
 const refs = {
-    country: document.querySelector('.notice-js'),
+    render: document.querySelector('.render-input-js'),
+    input: document.querySelector('.search-input-js'),
 };
 
-// const country = [{
-//     "name": "Colombia",
-//     "topLevelDomain": [".co"],
-//     "alpha2Code": "CO",
-//     "alpha3Code": "COL",
-//     "callingCodes": ["57"],
-//     "capital": "Bogotá",
-//     "altSpellings": ["CO", "Republic of Colombia", "República de Colombia"],
-//     "region": "Americas",
-//     "subregion": "South America",
-//     "population": 48759958,
-//     "latlng": [4.0, -72.0],
-//     "demonym": "Colombian",
-//     "area": 1141748.0,
-//     "gini": 55.9,
-//     "timezones": ["UTC-05:00"],
-//     "borders": ["BRA", "ECU", "PAN", "PER", "VEN"],
-//     "nativeName": "Colombia",
-//     "numericCode": "170",
-//     "currencies": [{
-//         "code": "COP",
-//         "name": "Colombian peso",
-//         "symbol": "$"
-//     }],
-//     "languages": [{
-//         "iso639_1": "es",
-//         "iso639_2": "spa",
-//         "name": "Spanish",
-//         "nativeName": "Español"
-//     }],
-//     "translations": {
-//         "de": "Kolumbien",
-//         "es": "Colombia",
-//         "fr": "Colombie",
-//         "ja": "コロンビア",
-//         "it": "Colombia",
-//         "br": "Colômbia",
-//         "pt": "Colômbia"
-//     },
-//     "flag": "https://restcountries.eu/data/col.svg",
-//     "regionalBlocs": [{
-//         "acronym": "PA",
-//         "name": "Pacific Alliance",
-//         "otherAcronyms": [],
-//         "otherNames": ["Alianza del Pacífico"]
-//     }, {
-//         "acronym": "USAN",
-//         "name": "Union of South American Nations",
-//         "otherAcronyms": ["UNASUR", "UNASUL", "UZAN"],
-//         "otherNames": ["Unión de Naciones Suramericanas", "União de Nações Sul-Americanas", "Unie van Zuid-Amerikaanse Naties", "South American Union"]
-//     }],
-//     "cioc": "COL"
-// }];
+const onDebounceInput = debounce(onCountryInput, 500);
 
-fetch('https://restcountries.eu/rest/v2/name/russia')
-.then(response => { return response.json()})
-.then(country => {
-    if (country.length === 1) {
-        country.forEach(c => { 
-            const countryRef = countryTpl(c);
-            console.log(countryRef);
-            refs.country.insertAdjacentHTML('beforeend', countryRef);
-        });
-    } if (country.length >= 2 && country.length <= 10) {
-        const maped = country.map(c => c.name);
-        console.log(maped);
-        
-        const countryRef = countriesTpl(maped);
-        console.log(countryRef);
-        refs.country.insertAdjacentHTML('beforeend', countryRef);
-    
-    } else {
-        console.log('more than 10 courtries')
-        console.log(country.length);
-    };
-    
-})
-.catch(error => {
-    console.log(error)
-});
+refs.input.addEventListener('input', onDebounceInput);
+
+function onCountryInput (e) {
+    const searchWord = e.target.value;
+    fetchCountries(searchWord)
+    .then(renderCountryMarkup)
+    .catch(onCatch)
+}
+
+function renderCountryMarkup (countries) {
+    if(countries) {
+        if (countries.length === 1) {
+            renderCountry(countries);
+        } else 
+        if (countries.length >= 2 && countries.length <= 10) {
+            renderCountries(countries);
+        } else {
+            console.log('more than 10 courtries')
+            console.log(countries.length);
+        };
+    };  
+};
+
+function renderCountry (countries) {
+    countries.forEach(country => { 
+        refs.render.innerHTML = countryTpl(country);
+        console.log(refs.input.value);
+        refs.input.value = '';
+    });
+};
+
+function renderCountries (countries) {
+    const countriesArray = countries.map(c => c.name);    
+    refs.render.innerHTML = countriesTpl(countriesArray);
+};
+
+function onCatch (error) {
+    console.log(error);
+    alert('Sorry something went wrong we cannot find country')
+};
