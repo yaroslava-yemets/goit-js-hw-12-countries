@@ -2,8 +2,8 @@ import './sass/main.scss';
 import countryTpl from './templates/countryTpl.hbs';
 import countriesTpl from './templates/countriesTpl.hbs';
 import fetchCountries from './js/fetchCountries.js';
-const debounce = require('lodash.debounce');
 import errorMessage from './js/pnotify.js';
+const debounce = require('lodash.debounce');
 
 const refs = {
     render: document.querySelector('.render-input-js'),
@@ -18,7 +18,7 @@ function onCountryInput (e) {
     if(!e.target.value) {
         return;
     };
-    const searchWord = e.target.value.trim();
+    const searchWord = e.target.value;
     console.log(searchWord);
     fetchCountries(searchWord)
     .then(renderCountryMarkup)

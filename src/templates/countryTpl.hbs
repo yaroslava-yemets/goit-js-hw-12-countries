@@ -1,15 +1,14 @@
-<div>
-    <h2>{{name}}</h2>
-    <div>
+    <div class="render-content">
+        <h2>{{name}}</h2>
         <h3>Capital: {{capital}}</h3>
         <h3>Population: {{population}}</h3>
-        <ul><h3>Languages</h3>
+        <ul class="render-content__list">
+            <h3>Languages</h3>
             {{#each languages}}
                 <li>{{this.name}}</li>
             {{/each}}
         </ul>
     </div>
-    <div>
+    <div class="render-img">
         <img src="{{flag}}" alt="{{name}}">
     </div>
-</div>
