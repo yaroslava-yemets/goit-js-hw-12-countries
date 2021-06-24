@@ -19,7 +19,6 @@ function onCountryInput (e) {
         return;
     };
     const searchWord = e.target.value;
-    console.log(searchWord);
     fetchCountries(searchWord)
     .then(renderCountryMarkup)
     .catch(onCatch)
@@ -32,8 +31,6 @@ function renderCountryMarkup (countries) {
     if (countries.length >= 2 && countries.length <= 10) {
         renderCountries(countries);
     } else {
-        console.log('more than 10 courtries')
-        console.log(countries.length);
         errorMessage()
     };  
 };
@@ -51,6 +48,5 @@ function renderCountries (countries) {
 };
 
 function onCatch (error) {
-    console.log(error);
     alert(`${error}`)
 };

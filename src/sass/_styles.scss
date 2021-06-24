@@ -30,12 +30,18 @@ body {
         font-weight: 600;
         color: #112e85;
         outline-style: none;
+        text-align: center;
     }
 }
+
+// Стили для ренедеринга контейнера с одной страной
 
 .render {
     display: flex;
     align-items: center;
+    justify-content: space-evenly;
+    width: 80vw;
+
 
     &-content {
         margin-right: 35px;
@@ -68,7 +74,39 @@ body {
 
     &-img > img {
         display: block;
-        width: 30vw;
+        width: 36vw;
     }
 }
+
+// стили для рендеринка контейнера с несколькими странами
+
+.renders {
+    width: 80vw;
+}
+
+.countries {
+    &-list {
+
+        padding: 0;
+        margin: 0;
+        list-style: none;
+    }
+
+    &-link {
+        text-decoration: none;
+        display: block;
+        text-align: center;
+
+        &:not(:last-child) {
+            margin-bottom: 20px;
+        }
+    }
+
+    &-item {
+        color: #0a1e53;   
+        font-weight: 600;
+        font-size: medium;     
+    }
+}
+
 
